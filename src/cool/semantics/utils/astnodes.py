@@ -4,7 +4,13 @@ Feature = Union['MethodDeclarationNode', 'AttrDeclarationNode']
 
 
 class Node:
-    pass
+    row: int
+    column: int
+
+    def set_position(self, row: int, col: int) -> 'Node':
+        self.row = row
+        self.column = col
+        return self
 
 
 class ProgramNode(Node):
