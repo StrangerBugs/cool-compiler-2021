@@ -14,7 +14,7 @@ class Node:
 
 
 class ProgramNode(Node):
-    def __init__(self, declarations):
+    def __init__(self, declarations: List['ClassDeclarationNode']):
         self.declarations: List[ClassDeclarationNode] = declarations
 
 
@@ -23,14 +23,14 @@ class DeclarationNode(Node):
 
 
 class ClassDeclarationNode(DeclarationNode):
-    def __init__(self, idx, features, parent=None):
+    def __init__(self, idx: str, features: List[Feature], parent: Optional[str] =None):
         self.id: str = idx
         self.parent: str = parent
         self.features: List[Feature] = features
 
 
 class MethodDeclarationNode(DeclarationNode):
-    def __init__(self, idx, params, return_type, body):
+    def __init__(self, idx: str, params: List[Tuple[str, str]], return_type: str, body: 'ExprNode'):
         self.id: str = idx
         self.params: List[Tuple[str, str]] = params
         self.return_type: str = return_type
@@ -38,7 +38,7 @@ class MethodDeclarationNode(DeclarationNode):
 
 
 class AttrDeclarationNode(DeclarationNode):
-    def __init__(self, idx, typex, expr=None):
+    def __init__(self, idx: str, typex: str, expr: 'ExprNode' = None):
         self.id: str = idx
         self.type: str = typex
         self.expr: ExprNode = expr
@@ -49,8 +49,8 @@ class ExprNode(Node):
 
 
 class ParenthesisExpr(ExprNode):
-    def __init__(self, expr):
-        self.expr = expr
+    def __init__(self, expr: 'ExprNode'):
+        self.expr: 'ExprNode' = expr
 
 
 class BlockNode(ExprNode):
