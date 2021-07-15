@@ -7,11 +7,13 @@ import typer
 
 sys.path.append(os.getcwd())
 
-from cool.grammar import serialize_parser_and_lexer, Token
+from cool.grammar import Token, serialize_parser_and_lexer
 from cool.lexertab import CoolLexer
 from cool.parsertab import CoolParser
-from cool.semantics import TypeCollector, TypeBuilder, OverriddenMethodChecker, TypeChecker, topological_sorting
-from cool.semantics.execution import Executor, ExecutionError
+from cool.semantics import (OverriddenMethodChecker, PositionAssigner,
+                            TypeBuilder, TypeChecker, TypeCollector,
+                            topological_sorting)
+from cool.semantics.execution import ExecutionError, Executor
 from cool.semantics.formatter import CodeBuilder, Formatter
 from cool.semantics.type_inference import InferenceChecker
 from cool.semantics.utils.scope import Context, Scope
@@ -138,6 +140,7 @@ def compile(
     if ast is None:
         exit(1)
 
+    PositionAssigner(tokens).visit(ast)
     ast, _, _, errors = check_semantics(ast, Scope(), Context(), [])
 
     if errors or parser.contains_errors:
